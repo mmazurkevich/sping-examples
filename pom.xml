@@ -4,6 +4,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.4.2.RELEASE</version>
+    </parent>
     <groupId>com.infinity</groupId>
     <artifactId>capable</artifactId>
     <packaging>pom</packaging>
@@ -15,13 +20,5 @@
         <module>rest</module>
     </modules>
     <name>app</name>
-
-    <build>
-        <finalName>capable</finalName>
-    </build>
-
-    <!-- Project dependencies -->
-    <dependencies>
-    </dependencies>
 
 </project>
