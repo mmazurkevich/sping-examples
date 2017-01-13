@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
 */
-package org.apache.myfaces.blank;
+package com.example.integration;
 
 /**
  * A typical simple backing bean, that is backed to <code>helloworld.jsp</code>
