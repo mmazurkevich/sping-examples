@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>model</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>model</name>
 
     <build>
