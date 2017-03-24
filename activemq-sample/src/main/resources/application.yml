@@ -1,0 +1,4 @@
+activemq:
+  properties:
+    in-memory: true
+    pool: true
