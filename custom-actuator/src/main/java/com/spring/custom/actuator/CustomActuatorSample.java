@@ -18,9 +18,4 @@ public class CustomActuatorSample {
     public static void main(String[] args) {
         SpringApplication.run(CustomActuatorSample.class, args);
     }
-//
-//    @Bean
-//    public Endpoint<FileSystemResource> fileEndpoint() {
-//        return new CustomLogFileActuator();
-//    }
 }
