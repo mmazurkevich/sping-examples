@@ -22,6 +22,7 @@
         <module>activemq-starter</module>
         <module>activemq-autoconfigure</module>
         <module>activemq-sample</module>
+        <module>custom-actuator</module>
     </modules>
     <name>app</name>
 

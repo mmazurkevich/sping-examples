@@ -1,0 +1,13 @@
+custom:
+  endpoint:
+    enabled: true
+    log-file-path: C:/Python27/LICENSE.txt
+endpoints:
+  shutdown:
+    enabled: false
+management:
+  security:
+    enabled: false
+spring:
+  profiles:
+    active: test
