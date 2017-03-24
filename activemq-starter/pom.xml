@@ -15,8 +15,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>example-spring-boot-autoconfigure</artifactId>
+            <groupId>com.spring.example</groupId>
+            <artifactId>activemq-spring-boot-autoconfigure</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
