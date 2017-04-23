@@ -23,6 +23,7 @@
         <module>activemq-autoconfigure</module>
         <module>activemq-sample</module>
         <module>custom-actuator</module>
+        <module>repository</module>
     </modules>
     <name>app</name>
 
