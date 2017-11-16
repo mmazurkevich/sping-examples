@@ -24,6 +24,7 @@
         <module>activemq-sample</module>
         <module>custom-actuator</module>
         <module>repository</module>
+        <module>aspect</module>
     </modules>
     <name>app</name>
 
