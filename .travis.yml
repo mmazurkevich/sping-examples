@@ -14,5 +14,5 @@ script:
 after_success:
   - cd ./integration-test
   - pwd
-  - mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=integration-test/target/site/jacoco/jacoco.xml -DprojectToken=$CODACY_PROJECT_TOKEN
+  - mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=integration-test/target/site/jacoco/jacoco.xml -DprojectToken=$CODACY_PROJECT_TOKEN  -DapiToken=$CODACY_API_TOKEN
 #  - ~/jpm/bin/codacy-coverage-reporter -l Java -r integration-test/target/site/jacoco/jacoco.xml --debug
