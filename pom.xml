@@ -25,6 +25,7 @@
         <module>custom-actuator</module>
         <module>repository</module>
         <module>aspect</module>
+        <module>metrics</module>
     </modules>
     <name>app</name>
 
