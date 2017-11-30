@@ -1,20 +1,20 @@
-package com.spring.sample;
+package com.spring.sample.groovy
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.IOException;
+import com.spring.sample.groovy.model.Film
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 /**
- * Created by Mikhail on 07.04.2017.
+ * Created by Mikhail on 01.12.2017.
  */
-public class Main {
+class Main {
 
-    public static void main(String[] args) throws IOException {
-        Document document = Jsoup.connect("url").get();
+    static void main(String[] args) {
+        def film = Film.newInstance()
+        Document document = Jsoup.connect("http://www.imdb.com/title/tt1615160/").get();
         //get film name with year
         //TODO:: cut the year from the end of film title
-        document.select("h1[itemprop=name]").first().text();
+        println document.select("h1[itemprop=name]").first().text();
         //getting year value
         document.select("span#titleYear").first().text();
         //getting original title
@@ -41,6 +41,5 @@ public class Main {
         //get actors list
         //TODO:: foreach iterate (split by ',')
         document.select("span[itemprop=actors]").text();
-
     }
 }
