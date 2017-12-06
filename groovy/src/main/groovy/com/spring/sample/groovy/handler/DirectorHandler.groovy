@@ -1,7 +1,17 @@
 package com.spring.sample.groovy.handler
 
+import com.spring.sample.groovy.model.Film
+import org.jsoup.nodes.Document
+
 /**
  * @author mmazurke <Mikhail.Mazurkevich@t-systems.com>
  */
-class DirectorHandler {
+class DirectorHandler implements Handler{
+    @Override
+    def handle(Document document, Film film) {
+        //get film director
+        def filmDirector = document.select("span[itemprop=director]").first().text();
+        println "Film director: ${filmDirector}"
+        film.director = filmDirector
+    }
 }
