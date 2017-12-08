@@ -9,10 +9,14 @@ class Film {
     String title
     String originalTitle
     String year
-    String director
-    String storyline
+    String rating
     List<Genre> genres
-    String contentRating
-    LocalDateTime releaseDate
+    String director
+    List<String> writers
+    List<String> stars
     String duration
+    String storyline
+    String tagline
+    String language
+    String releaseDate
 }
