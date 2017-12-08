@@ -4,14 +4,15 @@ import groovy.transform.ToString
 
 import java.time.LocalDateTime
 
-@ToString class Film {
+@ToString
+class Film {
     String title
     String originalTitle
     String year
     String director
-    String description
+    String storyline
     List<Genre> genres
     String contentRating
     LocalDateTime releaseDate
-    int duration
+    String duration
 }

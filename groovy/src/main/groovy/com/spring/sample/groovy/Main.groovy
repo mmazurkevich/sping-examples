@@ -1,7 +1,9 @@
 package com.spring.sample.groovy
 
-import com.spring.sample.groovy.handler.DescriptionHandler
+import com.spring.sample.groovy.handler.StorylineHandler
 import com.spring.sample.groovy.handler.DirectorHandler
+import com.spring.sample.groovy.handler.DurationHandler
+import com.spring.sample.groovy.handler.GenreHandler
 import com.spring.sample.groovy.handler.Handler
 import com.spring.sample.groovy.handler.TitleHandler
 import com.spring.sample.groovy.handler.YearHandler
@@ -15,6 +17,9 @@ import org.jsoup.nodes.Document
 class Main {
 
     static void main(String[] args) {
+        System.setProperty("http.proxyHost", "proxy.t-systems.ru")
+        System.setProperty("http.proxyPort", "3128")
+
         def film = Film.newInstance()
         Document document = Jsoup.connect("http://www.imdb.com/title/tt1615160").get()
         pageHandlers().each {
@@ -24,8 +29,7 @@ class Main {
         
 //        //getting content rating
 //        document.select("meta[itemprop=contentRating]").attr("content");
-//        //obtain film duration
-//        document.select("time[itemprop=duration]").first().text();
+
 //        //for each through the list of genres
 //        //TODO:: for each from the list
 //        document.select("span[itemprop=genre]").first().text();
@@ -46,8 +50,10 @@ class Main {
         def pageHandlers = new ArrayList<Handler>()
         pageHandlers.add(TitleHandler.newInstance())
         pageHandlers.add(YearHandler.newInstance())
+        pageHandlers.add(GenreHandler.newInstance())
+        pageHandlers.add(DurationHandler.newInstance())
         pageHandlers.add(DirectorHandler.newInstance())
-        pageHandlers.add(DescriptionHandler.newInstance())
+        pageHandlers.add(StorylineHandler.newInstance())
         return pageHandlers
     }
 }
