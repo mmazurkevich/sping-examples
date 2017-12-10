@@ -17,6 +17,7 @@ class Film {
     String duration
     String storyline
     String tagline
+    String country
     String language
     String releaseDate
 }

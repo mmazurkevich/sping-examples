@@ -16,31 +16,35 @@ import com.spring.sample.groovy.model.Film
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
+import java.text.DecimalFormat
+
 /**
  * Created by Mikhail on 01.12.2017.
  */
 class Main {
 
+
+    private static int previousFilmId = 0;
+
     static void main(String[] args) {
 //        System.setProperty("http.proxyHost", "proxy.t-systems.ru")
 //        System.setProperty("http.proxyPort", "3128")
 
-        def film = Film.newInstance()
-        Document document = Jsoup.connect("http://www.imdb.com/title/tt1615160").get()
-        pageHandlers().each {
-            it.handle(document, film)
+        def films = []
+        (1..9999999).each {
+            def film = Film.newInstance()
+            Document document = Jsoup.connect(generateNextUrl()).get()
+            pageHandlers().each {
+                it.handle(document, film)
+            }
+            println(film)
+            films.add(film)
         }
-        println(film)
+    }
 
-//        //get date of film publishing
-//        //TODO:: check got two values
-//        document.select("meta[itemprop=datePublished]").attr("content");
-//        //getting poster image
-//        document.select("img[itemprop=image]").first().attr("src");
-//        //get creators list
-//        //TODO:: for each check cut the begin of the line 'Writers:'
-//        document.select("div.credit_summary_item").get(1).text();
-
+    static String generateNextUrl() {
+        def formatter = DecimalFormat.newInstance("0000000")
+        return "http://www.imdb.com/title/tt" + formatter.format(++previousFilmId) + "/"
     }
 
     static List<Handler> pageHandlers() {

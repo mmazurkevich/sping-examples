@@ -2,7 +2,6 @@ package com.spring.sample.groovy.handler
 
 import com.spring.sample.groovy.model.Film
 import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
 
 /**
  * Created by Mikhail on 09.12.2017.
@@ -11,6 +10,9 @@ class FilmDetailHandler implements Handler{
     @Override
     def handle(Document document, Film film) {
         def detailElements = document.select("div[id*=titleDetails] > div.txt-block")
+        //Get film country
+        def country = detailElements.get(1).text()
+        println "Film country: $country"
         //Get film language
         def language = detailElements.get(2).text()
         println "Film language: $language"
