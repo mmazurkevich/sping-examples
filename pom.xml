@@ -26,6 +26,7 @@
         <module>repository</module>
         <module>aspect</module>
         <module>metrics</module>
+        <module>сoncurrency</module>
     </modules>
     <name>app</name>
 
