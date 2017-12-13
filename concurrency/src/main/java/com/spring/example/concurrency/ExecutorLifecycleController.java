@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ScheduledFuture;
 
 @RestController
@@ -37,7 +38,33 @@ public class ExecutorLifecycleController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/stop", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(path = "/trigger", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity triggerTasks(){
+        poollerTasks.forEach(poollerTask -> {
+            poollerTask.setReconfig(true);
+        });
+        System.out.println("Task should be started");
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/after", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity afterTasks(){
+        poollerTasks.forEach(poollerTask -> {
+            poollerTask.setReconfig(false);
+            threadPoolTaskScheduler.schedule(poollerTask, poollerTask);
+        });
+        System.out.println("Task should be started");
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/get", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity getTasks(){
+        System.out.println("awaiting for task complition " + threadPoolTaskScheduler.getActiveCount());
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+    @RequestMapping(path = "/stopAll", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity stopTasks(){
         System.out.println("Start finishing tasks");
         scheduledFutures.forEach(scheduledFuture -> scheduledFuture.cancel(false));

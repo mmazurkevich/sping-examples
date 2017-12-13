@@ -22,18 +22,16 @@ public class PoollerTask implements Runnable, Trigger{
         System.out.println("Finish thread");
     }
 
+    public void setReconfig(boolean reconfig){
+        this.reconfig = reconfig;
+    }
+
     @Override
     public Date nextExecutionTime(TriggerContext triggerContext) {
-        if (reconfig) {
-            LocalDateTime localDateTime = LocalDateTime.now().plusSeconds(10);
-            Date convertedDatetime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            reconfig = false;
-            return convertedDatetime;
+        if (!reconfig) {
+            return  new Date();
         }else {
-            LocalDateTime localDateTime = LocalDateTime.now();
-            Date convertedDatetime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            reconfig = true;
-            return convertedDatetime;
+            return null;
         }
     }
 }
