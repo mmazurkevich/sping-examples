@@ -37,4 +37,18 @@ public class SetCollection {
             }
         }).start();
     }
+
+    //Set in natural order
+    public static void skipSet() {
+        Set<Integer> set = new ConcurrentSkipListSet<>();
+        new Thread(() -> {
+            for (int i = 0; i < 200; i++) {
+                if (i % 2 == 0)
+                    set.add(i);
+                else
+                    set.add(i + 500);
+            }
+            System.out.println(set);
+        }).start();
+    }
 }
