@@ -27,7 +27,6 @@
         <module>aspect</module>
         <module>metrics</module>
         <module>concurrency</module>
-        <module>hazelcast</module>
     </modules>
     <name>app</name>
 
