@@ -1,10 +1,10 @@
-package ru.spring.example;
+package com.spring.example.rest;
 
+import com.spring.example.model.Student;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.spring.example.model.Student;
 
 import java.util.Arrays;
 import java.util.List;

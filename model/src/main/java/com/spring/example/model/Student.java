@@ -1,4 +1,4 @@
-package ru.spring.example.model;
+package com.spring.example.model;
 
 /**
  * Created by Mikhail on 17.12.2016.

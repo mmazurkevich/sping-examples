@@ -10,10 +10,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @SpringBootApplication
 public class BootApplication {
 
+    /**
+     * http://winterbe.com/posts/2015/04/07/java8-concurrency-tutorial-thread-executor-examples/
+     */
     public static void main(String[] args) {
         SpringApplication.run(BootApplication.class,args);
     }
-
 
     @Bean
     public ThreadPoolTaskScheduler threadPoolTaskScheduler(){
