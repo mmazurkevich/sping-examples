@@ -16,8 +16,7 @@
     <modules>
         <module>groovy</module>
         <module>model</module>
-        <module>ws</module>
-        <module>rest</module>
+        <module>web</module>
         <module>integration-test</module>
         <module>activemq-starter</module>
         <module>activemq-autoconfigure</module>

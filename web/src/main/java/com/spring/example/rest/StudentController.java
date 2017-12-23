@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Mikhail on 17.12.2016.
  */
-@RestController
+//@RestController
 public class StudentController {
 
     @RequestMapping(path = "/api/list", method = RequestMethod.GET, produces = "application/json")
