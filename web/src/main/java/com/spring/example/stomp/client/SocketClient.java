@@ -1,5 +1,7 @@
 package com.spring.example.stomp.client;
 
+import com.spring.example.stomp.Message;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
@@ -34,7 +36,7 @@ public class SocketClient {
 
         String message;
         while (!(message = scanner.nextLine()).equals("exit")) {
-            connection.send("/app/chat", username + "#" +message);
+            connection.send("/app/chat", new Message(username, message));
         }
         connection.send("/app/logout", username);
     }
