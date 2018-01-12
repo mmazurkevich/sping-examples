@@ -13,6 +13,7 @@ import com.spring.sample.groovy.handler.TitleHandler
 import com.spring.sample.groovy.handler.WriterHandler
 import com.spring.sample.groovy.handler.YearHandler
 import com.spring.sample.groovy.model.Film
+import groovy.json.JsonOutput
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -31,15 +32,30 @@ class Main {
 //        System.setProperty("http.proxyPort", "3128")
 
         def films = []
+        def exceptionCount = 0
         (1..9999999).each {
-            def film = Film.newInstance()
-            Document document = Jsoup.connect(generateNextUrl()).get()
-            pageHandlers().each {
-                it.handle(document, film)
-            }
-            println(film)
-            films.add(film)
+            def url = generateNextUrl()
+//            try {
+                def film = Film.newInstance()
+                Document document = Jsoup.connect(url).get()
+                pageHandlers().each {
+                    it.handle(document, film)
+                }
+                println(film)
+                films.add(film)
+//            } catch (Exception e) {
+//                println "Exception in parsing film from: $url"
+//                println "$e"
+//                exceptionCount++
+//            }
         }
+        def json = JsonOutput.toJson(films)
+        def file = new File('films.txt')
+        file.write(JsonOutput.prettyPrint(json))
+
+        def filmsCount = films.size()
+        println "Parsed films count: $filmsCount"
+        println "Exceptions count: $exceptionCount"
     }
 
     static String generateNextUrl() {
