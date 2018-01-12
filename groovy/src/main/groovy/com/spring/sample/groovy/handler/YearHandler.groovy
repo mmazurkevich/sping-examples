@@ -9,10 +9,15 @@ import org.jsoup.nodes.Document
 class YearHandler implements Handler {
     @Override
     def handle(Document document, Film film) {
-        //Get year value
-        def filmYear = document.select("span#titleYear").first().text()
-        def year = filmYear.replace('(', '').replace(')', '')
-        println "Film year: ${year}"
-        film.year = year
+        try {
+            //Get year value
+            def filmYear = document.select("span#titleYear").first().text()
+            def year = filmYear.replace('(', '').replace(')', '')
+            println "Film year: ${year}"
+            film.year = year
+        } catch (Exception e) {
+            println "Exception in parsing film year"
+            println "$e"
+        }
     }
 }

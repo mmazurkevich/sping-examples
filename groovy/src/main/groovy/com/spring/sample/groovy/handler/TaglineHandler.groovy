@@ -6,12 +6,21 @@ import org.jsoup.nodes.Document
 /**
  * Created by Mikhail on 09.12.2017.
  */
-class TaglineHandler implements Handler{
+class TaglineHandler implements Handler {
     @Override
     def handle(Document document, Film film) {
-        //Get tagline
-        def tagline = document.select("div[id*=titleStoryLine] > div.txt-block").first().text()
-        println "Film tagline: $tagline"
-        film.tagline = tagline
+        try {
+            //Get tagline
+            document.select("div[id*=titleStoryLine] > div.txt-block").each {
+                if (it.text().contains("Taglines")) {
+                    def tagline = it.text().replace("Taglines:", "")
+                    println "Film tagline: $tagline"
+                    film.tagline = tagline
+                }
+            }
+        } catch (Exception e) {
+            println "Exception in parsing film tagline"
+            println "$e"
+        }
     }
 }

@@ -7,12 +7,17 @@ import org.jsoup.nodes.Document
 /**
  * @author mmazurke <Mikhail.Mazurkevich@t-systems.com>
  */
-class GenreHandler implements Handler{
+class GenreHandler implements Handler {
     @Override
     def handle(Document document, Film film) {
-        def genres = document.select("span[itemprop=genre]")
-        def listOfGenres = genres.stream().collect { Genre.valueOf(it.text().toUpperCase()) }
-        println "File genres: $listOfGenres"
-        film.genres = listOfGenres
+        try {
+            def genres = document.select("span[itemprop=genre]")
+            def listOfGenres = genres.stream().collect { Genre.valueOf(it.text().toUpperCase()) }
+            println "File genres: $listOfGenres"
+            film.genres = listOfGenres
+        } catch (Exception e) {
+            println "Exception in parsing film genres"
+            println "$e"
+        }
     }
 }
