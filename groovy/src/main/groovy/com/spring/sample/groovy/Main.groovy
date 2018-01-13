@@ -25,14 +25,14 @@ import java.text.DecimalFormat
  */
 class Main {
 
-
-    private static int previousFilmId = 0;
+    private static int previousFilmId = 0
 
     static void main(String[] args) {
 //        System.setProperty("http.proxyHost", "proxy.t-systems.ru")
 //        System.setProperty("http.proxyPort", "3128")
-        FilmRepository.newInstance()
-        def films = []
+        def filmRepository = FilmRepository.newInstance()
+//        def films = []
+        previousFilmId = filmRepository.getLastId()
         def exceptionCount = 0
         (1..9999999).each {
             def url = generateNextUrl()
@@ -44,19 +44,20 @@ class Main {
                     it.handle(document, film)
                 }
                 println(film)
-                films.add(film)
+                filmRepository.save(film)
+//                films.add(film)
             } catch (Exception e) {
                 println "Unexpected exception in parsing film"
                 println "$e"
                 exceptionCount++
             }
         }
-        def json = JsonOutput.toJson(films)
-        def file = new File('films.txt')
-        file.write(JsonOutput.prettyPrint(json))
+//        def json = JsonOutput.toJson(films)
+//        def file = new File('films.txt')
+//        file.write(JsonOutput.prettyPrint(json))
 
-        def filmsCount = films.size()
-        println "Parsed films count: $filmsCount"
+//        def filmsCount = films.size()
+//        println "Parsed films count: $filmsCount"
         println "Exceptions count: $exceptionCount"
     }
 

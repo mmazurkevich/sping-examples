@@ -1,22 +1,27 @@
 package com.spring.sample.groovy.repository
 
+import com.spring.sample.groovy.model.Film
 import groovy.sql.Sql
 
 class FilmRepository {
 
     def sql
+    def filmDataSet
 
     FilmRepository() {
         sql = Sql.newInstance("jdbc:sqlite:./groovy/films.db", "org.sqlite.JDBC")
-        sql.execute("drop table if exists person")
-        sql.execute("create table person (id integer, name string)")
+        filmDataSet = sql.dataSet("film")
+    }
 
-        def people = sql.dataSet("person")
-        people.add(id:1, name:"leo")
-        people.add(id:2,name:'yui')
+    def getLastId() {
+        def result = sql.firstRow('select max(id) as id from film')
+        return result.id
+    }
 
-        sql.eachRow("select * from person") {
-            println("id=${it.id}, name= ${it.name}")
-        }
+    def save(Film film) {
+        filmDataSet.add(title: film.title, originalTitle: film.originalTitle, year: film.year, rating: film.rating,
+                genres: film.genres.toString(), director: film.director, writers: film.writers.toString(), stars: film.stars.toString(),
+                duration: film.duration, storyline: film.storyline, tagline: film.tagline, country: film.country, language: film.language,
+                releaseDate: film.releaseDate)
     }
 }
