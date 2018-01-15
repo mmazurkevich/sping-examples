@@ -1,0 +1,10 @@
+Lucene has also been used to implement recommendation systems.
+For example, Lucene's 'MoreLikeThis' Class can generate recommendations for
+similar documents. In a comparison of the term vector-based similarity approach
+of 'MoreLikeThis' with citation-based document similarity measures, such as
+Co-citation and Co-citation Proximity Analysis Lucene's approach excelled
+at recommending documents with very similar structural characteristics and
+more narrow relatedness. In contrast, citation-based document similarity measures,
+tended to be more suitable for recommending more broadly related documents, meaning
+citation-based approaches may be more suitable for generating serendipitous recommendations,
+as long as documents to be recommended contain in-text citations.

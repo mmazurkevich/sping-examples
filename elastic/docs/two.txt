@@ -1,0 +1,6 @@
+Shay Banon created the precursor to Elasticsearch, called Compass, in 2004.
+While thinking about the third version of Compass he realized that it Lucene
+would be necessary to rewrite big parts of Compass to "create a scalable
+search solution". So he created "a solution built from the ground up to be
+distributed" and used a common interface, JSON over HTTP, suitable for programming
+languages other than Java as well. Shay Banon released the first version of Elasticsearch in February 2010.

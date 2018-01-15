@@ -26,6 +26,7 @@
         <module>aspect</module>
         <module>metrics</module>
         <module>concurrency</module>
+        <module>elastic</module>
     </modules>
     <name>app</name>
 
