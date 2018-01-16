@@ -16,21 +16,21 @@
         <finalName>elastic</finalName>
     </build>
 
-    <!-- Project dependencies -->
-    <dependencies>
+    <properties>
+        <lucene-core.version>7.2.1</lucene-core.version>
+    </properties>
 
+    <dependencies>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>7.2.1</version>
+            <version>${lucene-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
-            <version>7.2.1</version>
+            <version>${lucene-core.version}</version>
         </dependency>
-
     </dependencies>
-
 
 </project>
