@@ -1,6 +1,7 @@
 package io.bot.email;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -10,6 +11,8 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.StrictMath.toIntExact;
+
 public class EmailBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
@@ -18,7 +21,6 @@ public class EmailBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
         if (update.hasMessage() && update.getMessage().hasText()) {
-            String messageText = update.getMessage().getText();
             long chat_id = update.getMessage().getChatId();
             if (update.getMessage().getText().equals("/start")) {
 
@@ -55,8 +57,9 @@ public class EmailBot extends TelegramLongPollingBot {
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
 
             if (call_data.equals("yandex") || call_data.equals("gmail") || call_data.equals("mailru")) {
-                SendMessage message = new SendMessage() // Create a message object object
+                EditMessageText new_message = new EditMessageText()
                         .setChatId(chat_id)
+                        .setMessageId(toIntExact(message_id))
                         .setText("Please select Email protocol");
                 rowInline.add(new InlineKeyboardButton().setText("SMTP").setCallbackData("smtp"));
                 rowInline.add(new InlineKeyboardButton().setText("POP3").setCallbackData("pop3"));
@@ -65,18 +68,20 @@ public class EmailBot extends TelegramLongPollingBot {
                 rowsInline.add(rowInline);
                 // Add it to the message
                 markupInline.setKeyboard(rowsInline);
-                message.setReplyMarkup(markupInline);
-//                try {
-//                    execute(message); // Sending our message object to user
-//                } catch (TelegramApiException e) {
-//                    e.printStackTrace();
-//                }
+                new_message.setReplyMarkup(markupInline);
+
+                try {
+                    execute(new_message); // Sending our message object to user
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             } else if (call_data.equals("smtp") || call_data.equals("pop3") || call_data.equals("imaps")) {
-                SendMessage message = new SendMessage() // Create a message object object
+                EditMessageText new_message = new EditMessageText()
                         .setChatId(chat_id)
+                        .setMessageId(toIntExact(message_id))
                         .setText("Please enter your Email address");
                 try {
-                    execute(message); // Sending our message object to user
+                    execute(new_message); // Sending our message object to user
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
@@ -86,9 +91,11 @@ public class EmailBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
+        return null;
     }
 
     @Override
     public String getBotToken() {
+        return null;
     }
 }
