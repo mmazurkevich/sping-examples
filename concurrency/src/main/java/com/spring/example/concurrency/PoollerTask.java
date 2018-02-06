@@ -3,8 +3,6 @@ package com.spring.example.concurrency;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.TriggerContext;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 
 public class PoollerTask implements Runnable, Trigger{

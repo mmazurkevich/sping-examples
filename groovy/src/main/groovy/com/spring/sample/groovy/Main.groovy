@@ -1,20 +1,8 @@
 package com.spring.sample.groovy
 
-import com.spring.sample.groovy.handler.RatingHandler
-import com.spring.sample.groovy.handler.FilmDetailHandler
-import com.spring.sample.groovy.handler.StarHandler
-import com.spring.sample.groovy.handler.StorylineHandler
-import com.spring.sample.groovy.handler.DirectorHandler
-import com.spring.sample.groovy.handler.DurationHandler
-import com.spring.sample.groovy.handler.GenreHandler
-import com.spring.sample.groovy.handler.Handler
-import com.spring.sample.groovy.handler.TaglineHandler
-import com.spring.sample.groovy.handler.TitleHandler
-import com.spring.sample.groovy.handler.WriterHandler
-import com.spring.sample.groovy.handler.YearHandler
+import com.spring.sample.groovy.handler.*
 import com.spring.sample.groovy.model.Film
 import com.spring.sample.groovy.repository.FilmRepository
-import groovy.json.JsonOutput
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 

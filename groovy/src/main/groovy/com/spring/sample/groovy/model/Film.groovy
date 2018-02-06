@@ -2,8 +2,6 @@ package com.spring.sample.groovy.model
 
 import groovy.transform.ToString
 
-import java.time.LocalDateTime
-
 @ToString
 class Film {
     String title

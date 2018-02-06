@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.AbstractEndpoint;
 import org.springframework.boot.actuate.endpoint.Endpoint;
 import org.springframework.context.annotation.Conditional;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
