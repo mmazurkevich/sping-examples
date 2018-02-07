@@ -1,10 +1,9 @@
 package io.bot.email.handlers;
 
 import io.bot.email.model.Preferences;
-import io.bot.email.model.SetupState;
 import io.bot.email.model.Vendor;
 import org.telegram.telegrambots.api.methods.BotApiMethod;
-import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -13,35 +12,35 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.StrictMath.toIntExact;
-
-public class EmailVendorHandler extends AbstractHandler {
+public class ActionHandler extends AbstractHandler{
     @Override
     boolean accept(Update update, Preferences preferences) {
-        boolean accepted = update.hasCallbackQuery()
-                && preferences.getSetupState().equals(SetupState.SELECT_EMAIL_VENDOR);
-        preferences.setSetupState(accepted ? SetupState.SELECT_EMAIL_PROTOCOL : preferences.getSetupState());
-        return accepted;
+        return update.hasMessage()
+                && update.getMessage().getText().equals("/actions");
     }
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
-        Message message = update.getCallbackQuery().getMessage();
-        preferences.setVendor(Vendor.valueOf(update.getCallbackQuery().getData().toUpperCase()));
-        return new EditMessageText()
+        Message message = update.getMessage();
+        return new SendMessage()
                 .setReplyMarkup(getInlineKeyboard())
                 .setChatId(message.getChatId())
-                .setMessageId(toIntExact(message.getMessageId()))
-                .setText("Please select Email protocol");
+                .setText("Select prefered action :e-mail:");
     }
 
     private InlineKeyboardMarkup getInlineKeyboard() {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
-        rowInline.add(new InlineKeyboardButton().setText("SMTP").setCallbackData("smtp"));
-        rowInline.add(new InlineKeyboardButton().setText("POP3").setCallbackData("pop3"));
-        rowInline.add(new InlineKeyboardButton().setText("IMAPS").setCallbackData("imaps"));
+        rowInline.add(new InlineKeyboardButton().setText("Inbox").setCallbackData("inbox"));
+        rowInline.add(new InlineKeyboardButton().setText("Outbox").setCallbackData("outbox"));
+        rowsInline.add(rowInline);
+        rowInline = new ArrayList<>();
+        rowInline.add(new InlineKeyboardButton().setText("Unread").setCallbackData("unread"));
+        rowsInline.add(rowInline);
+        rowInline = new ArrayList<>();
+        rowInline.add(new InlineKeyboardButton().setText("Settings").setCallbackData("settings"));
+        rowInline.add(new InlineKeyboardButton().setText("Remove account").setCallbackData("removeAccount"));
         rowsInline.add(rowInline);
         markupInline.setKeyboard(rowsInline);
         return markupInline;

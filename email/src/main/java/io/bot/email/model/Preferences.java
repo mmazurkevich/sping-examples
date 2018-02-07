@@ -65,4 +65,17 @@ public class Preferences {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    @Override
+    public String toString() {
+        return "Preferences{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", protocol=" + protocol +
+                ", vendor=" + vendor +
+                ", setupState=" + setupState +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }

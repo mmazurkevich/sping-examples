@@ -4,6 +4,7 @@ import io.bot.email.model.Preferences;
 import io.bot.email.model.SetupState;
 import org.telegram.telegrambots.api.methods.BotApiMethod;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 
 import java.util.ArrayList;
@@ -23,14 +24,18 @@ public class Handlers {
         handlers.add(new EmailProtocolHandler());
         handlers.add(new EmailAddressHandler());
         handlers.add(new EmailPasswordHandler());
+        handlers.add(new ActionHandler());
     }
 
     public BotApiMethod handle(Update update) {
         long userId;
+        Message message;
         if (update.hasMessage()) {
-            userId = update.getMessage().getChatId();
+            message = update.getMessage();
+            userId = message.getChatId();
         } else {
-            userId = update.getCallbackQuery().getMessage().getChatId();
+            message = update.getCallbackQuery().getMessage();
+            userId = message.getChatId();
         }
         Preferences preferences = new Preferences();
         preferences.setSetupState(SetupState.FIRST_USER_SETUP);
@@ -40,7 +45,7 @@ public class Handlers {
                 .map(it -> it.handle(update, usersPreferences.get(userId)))
                 .findFirst()
                 .orElseGet(() -> new SendMessage()
-                        .setChatId(update.getMessage().getChatId())
+                        .setChatId(message.getChatId())
                         .setText("Sorry, my creators are not clever enough and I can understand your command"));
     }
 }

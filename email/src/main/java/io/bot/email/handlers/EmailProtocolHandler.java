@@ -1,9 +1,11 @@
 package io.bot.email.handlers;
 
 import io.bot.email.model.Preferences;
+import io.bot.email.model.Protocol;
 import io.bot.email.model.SetupState;
 import org.telegram.telegrambots.api.methods.BotApiMethod;
 import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 
 import static java.lang.StrictMath.toIntExact;
@@ -19,9 +21,11 @@ public class EmailProtocolHandler extends AbstractHandler{
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
+        Message message = update.getCallbackQuery().getMessage();
+        preferences.setProtocol(Protocol.valueOf(update.getCallbackQuery().getData().toUpperCase()));
         return new EditMessageText()
-                .setChatId(update.getCallbackQuery().getMessage().getChatId())
-                .setMessageId(toIntExact(update.getCallbackQuery().getMessage().getMessageId()))
+                .setChatId(message.getChatId())
+                .setMessageId(toIntExact(message.getMessageId()))
                 .setText("Please enter your Email address");
     }
 }

@@ -5,6 +5,18 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+/**
+ * Main email bot actions:
+ *
+ * add - Add Email account
+ * actions - Show base bot actions
+ * inbox - Show inbox messages
+ * outbox - Show outbox messages
+ * unread - Show unreaded messaes
+ * remove - Remove account
+ * settings - Edit email configurations
+ *
+ */
 public class EmailBot extends TelegramLongPollingBot {
 
     private Handlers handlers = new Handlers();
@@ -27,4 +39,6 @@ public class EmailBot extends TelegramLongPollingBot {
     public String getBotToken() {
         return "";
     }
+
+
 }

@@ -29,10 +29,6 @@ public class UserStartupHandler extends AbstractHandler{
         preferences.setFirstName(chat.getFirstName());
         preferences.setLastName(chat.getLastName());
 
-        System.out.println(update.getMessage().getChat().getFirstName());
-        System.out.println(update.getMessage().getChat().getLastName());
-        System.out.println(update.getMessage().getChatId());
-
         return new SendMessage() // Create a message object object
                 .setChatId(update.getMessage().getChatId())
                 .setReplyMarkup(getInlineKeyboard())
