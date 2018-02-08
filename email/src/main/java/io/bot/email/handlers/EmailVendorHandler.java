@@ -39,9 +39,9 @@ public class EmailVendorHandler extends AbstractHandler {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
-        rowInline.add(new InlineKeyboardButton().setText("SMTP").setCallbackData("smtp"));
-        rowInline.add(new InlineKeyboardButton().setText("POP3").setCallbackData("pop3"));
         rowInline.add(new InlineKeyboardButton().setText("IMAPS").setCallbackData("imaps"));
+        rowInline.add(new InlineKeyboardButton().setText("POP3").setCallbackData("pop3"));
+        rowInline.add(new InlineKeyboardButton().setText("SMTP").setCallbackData("smtp"));
         rowsInline.add(rowInline);
         markupInline.setKeyboard(rowsInline);
         return markupInline;

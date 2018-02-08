@@ -24,7 +24,8 @@ public class Handlers {
         handlers.add(new EmailProtocolHandler());
         handlers.add(new EmailAddressHandler());
         handlers.add(new EmailPasswordHandler());
-        handlers.add(new ActionHandler());
+        handlers.add(new BaseActionHandler());
+        handlers.add(new InboxActionHandler());
     }
 
     public BotApiMethod handle(Update update) {

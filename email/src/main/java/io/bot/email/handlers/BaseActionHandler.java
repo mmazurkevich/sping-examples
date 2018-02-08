@@ -12,7 +12,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionHandler extends AbstractHandler{
+public class BaseActionHandler extends AbstractHandler{
     @Override
     boolean accept(Update update, Preferences preferences) {
         return update.hasMessage()

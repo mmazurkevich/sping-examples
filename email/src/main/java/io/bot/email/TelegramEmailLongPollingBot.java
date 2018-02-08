@@ -17,7 +17,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
  * settings - Edit email configurations
  *
  */
-public class EmailBot extends TelegramLongPollingBot {
+public class TelegramEmailLongPollingBot extends TelegramLongPollingBot {
 
     private Handlers handlers = new Handlers();
 
