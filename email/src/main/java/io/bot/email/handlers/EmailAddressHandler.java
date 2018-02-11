@@ -12,6 +12,7 @@ public class EmailAddressHandler extends AbstractHandler {
     @Override
     boolean accept(Update update, Preferences preferences) {
         boolean accepted = update.hasMessage()
+                && preferences.getSetupState()!= null
                 && preferences.getSetupState().equals(SetupState.ENTERING_EMAIL);
         preferences.setSetupState(accepted ? SetupState.ENTERING_PASSWORD : preferences.getSetupState());
         return accepted;

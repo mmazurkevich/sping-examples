@@ -14,6 +14,7 @@ public class EmailProtocolHandler extends AbstractHandler{
     @Override
     boolean accept(Update update, Preferences preferences) {
         boolean accepted = update.hasCallbackQuery()
+                && preferences.getSetupState()!= null
                 && preferences.getSetupState().equals(SetupState.SELECT_EMAIL_PROTOCOL);
         preferences.setSetupState(accepted ? SetupState.ENTERING_EMAIL : preferences.getSetupState());
         return accepted;

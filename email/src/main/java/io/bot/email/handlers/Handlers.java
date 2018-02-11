@@ -1,5 +1,6 @@
 package io.bot.email.handlers;
 
+import io.bot.email.database.UserRepository;
 import io.bot.email.model.Preferences;
 import io.bot.email.model.SetupState;
 import org.telegram.telegrambots.api.methods.BotApiMethod;
@@ -14,16 +15,17 @@ import java.util.Map;
 
 public class Handlers {
 
+    private UserRepository repository;
     private List<AbstractHandler> handlers;
-    private Map<Long, Preferences> usersPreferences = new HashMap<>();
 
     public Handlers() {
+        repository = new UserRepository();
         handlers = new ArrayList<>();
         handlers.add(new UserStartupHandler());
         handlers.add(new EmailVendorHandler());
         handlers.add(new EmailProtocolHandler());
         handlers.add(new EmailAddressHandler());
-        handlers.add(new EmailPasswordHandler());
+        handlers.add(new EmailPasswordHandler(repository));
         handlers.add(new BaseActionHandler());
         handlers.add(new InboxActionHandler());
     }
@@ -38,12 +40,12 @@ public class Handlers {
             message = update.getCallbackQuery().getMessage();
             userId = message.getChatId();
         }
-        Preferences preferences = new Preferences();
-        preferences.setSetupState(SetupState.FIRST_USER_SETUP);
-        usersPreferences.putIfAbsent(userId, preferences);
+        Preferences preferences = repository.findByUserId(userId);
+        preferences = preferences != null ? preferences : new Preferences();
+        Preferences finalPreferences = preferences;
         return handlers.stream()
-                .filter(it -> it.accept(update, usersPreferences.get(userId)))
-                .map(it -> it.handle(update, usersPreferences.get(userId)))
+                .filter(it -> it.accept(update, finalPreferences))
+                .map(it -> it.handle(update, finalPreferences))
                 .findFirst()
                 .orElseGet(() -> new SendMessage()
                         .setChatId(message.getChatId())

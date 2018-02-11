@@ -2,13 +2,23 @@ package io.bot.email.model;
 
 public class Preferences {
 
-    private String email;
-    private String password;
-    private Protocol protocol;
-    private Vendor vendor;
-    private SetupState setupState;
-    private String firstName;
-    private String lastName;
+    public long userId;
+    public String email;
+    public String password;
+    public Protocol protocol;
+    public Vendor vendor;
+    public SetupState setupState;
+    public String firstName;
+    public String lastName;
+
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
     public String getEmail() {
         return email;
@@ -69,7 +79,8 @@ public class Preferences {
     @Override
     public String toString() {
         return "Preferences{" +
-                "email='" + email + '\'' +
+                "userId='" + userId + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", protocol=" + protocol +
                 ", vendor=" + vendor +

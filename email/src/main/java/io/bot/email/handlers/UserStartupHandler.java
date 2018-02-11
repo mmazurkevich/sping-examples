@@ -16,8 +16,7 @@ public class UserStartupHandler extends AbstractHandler{
     @Override
     boolean accept(Update update, Preferences preferences) {
         boolean accepted = update.hasMessage()
-                && update.getMessage().getText().equals("/start")
-                && preferences.getSetupState().equals(SetupState.FIRST_USER_SETUP);
+                && update.getMessage().getText().equals("/start");
         preferences.setSetupState(accepted ? SetupState.SELECT_EMAIL_VENDOR : preferences.getSetupState());
         return accepted;
     }

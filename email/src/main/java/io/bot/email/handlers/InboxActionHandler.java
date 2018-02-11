@@ -8,13 +8,12 @@ import org.telegram.telegrambots.api.methods.BotApiMethod;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 
-import javax.mail.*;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
-import java.util.regex.Pattern;
 
 public class InboxActionHandler extends AbstractHandler {
     @Override
