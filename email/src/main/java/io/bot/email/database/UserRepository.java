@@ -1,5 +1,6 @@
 package io.bot.email.database;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -13,7 +14,7 @@ import java.lang.reflect.Field;
 
 public class UserRepository {
 
-    public void create(Preferences preferences) throws IllegalAccessException {
+    public void create(Preferences preferences) {
         MongoDatabase connection = MongoDBConnection.getConnection();
         MongoCollection<Document> collection = connection.getCollection("users");
         Document convert = convert(preferences);
@@ -23,13 +24,13 @@ public class UserRepository {
     public Preferences findByUserId(long userId) {
         MongoDatabase connection = MongoDBConnection.getConnection();
         MongoCollection<Document> collection = connection.getCollection("users");
-        Document user = collection.find(Filters.eq("userId", userId)).first();
+        Document user = collection.find(Filters.eq("userId", String.valueOf(userId))).first();
         return user != null ? convert(user) : null;
     }
 
     private Preferences convert(Document document) {
         Preferences preferences = new Preferences();
-        preferences.setUserId(document.getLong("userId"));
+        preferences.setUserId(Long.valueOf(document.getString("userId")));
         preferences.setEmail(document.getString("email"));
         preferences.setPassword(document.getString("password"));
         preferences.setFirstName(document.getString("firstName"));
@@ -40,11 +41,16 @@ public class UserRepository {
         return preferences;
     }
 
-    private Document convert(Preferences preferences) throws IllegalAccessException {
+    private Document convert(Preferences preferences) {
         Document doc = new Document();
         Field[] declaredFields = Preferences.class.getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            Object fieldValue = declaredField.get(preferences);
+            Object fieldValue = null;
+            try {
+                fieldValue = declaredField.get(preferences);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
             String value = fieldValue != null ? fieldValue.toString() : "";
             doc.append(declaredField.getName(), value);
         }

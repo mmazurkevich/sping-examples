@@ -25,7 +25,7 @@ public class Handlers {
         handlers.add(new EmailVendorHandler());
         handlers.add(new EmailProtocolHandler());
         handlers.add(new EmailAddressHandler());
-        handlers.add(new EmailPasswordHandler(repository));
+        handlers.add(new EmailPasswordHandler());
         handlers.add(new BaseActionHandler());
         handlers.add(new InboxActionHandler());
     }
@@ -41,11 +41,15 @@ public class Handlers {
             userId = message.getChatId();
         }
         Preferences preferences = repository.findByUserId(userId);
-        preferences = preferences != null ? preferences : new Preferences();
+        if (preferences == null) {
+            preferences = new Preferences();
+            preferences.setUserId(userId);
+        }
         Preferences finalPreferences = preferences;
         return handlers.stream()
                 .filter(it -> it.accept(update, finalPreferences))
                 .map(it -> it.handle(update, finalPreferences))
+                .peek(it -> repository.create(finalPreferences))
                 .findFirst()
                 .orElseGet(() -> new SendMessage()
                         .setChatId(message.getChatId())

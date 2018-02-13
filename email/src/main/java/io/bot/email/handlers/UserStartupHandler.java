@@ -27,6 +27,7 @@ public class UserStartupHandler extends AbstractHandler{
         Chat chat = update.getMessage().getChat();
         preferences.setFirstName(chat.getFirstName());
         preferences.setLastName(chat.getLastName());
+        preferences.setSetupState(SetupState.FIRST_USER_SETUP);
 
         return new SendMessage() // Create a message object object
                 .setChatId(update.getMessage().getChatId())
