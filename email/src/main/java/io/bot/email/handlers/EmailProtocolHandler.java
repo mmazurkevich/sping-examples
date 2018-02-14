@@ -16,7 +16,6 @@ public class EmailProtocolHandler extends AbstractHandler{
         boolean accepted = update.hasCallbackQuery()
                 && preferences.getSetupState()!= null
                 && preferences.getSetupState().equals(SetupState.SELECT_EMAIL_PROTOCOL);
-        preferences.setSetupState(accepted ? SetupState.ENTERING_EMAIL : preferences.getSetupState());
         return accepted;
     }
 
@@ -24,6 +23,7 @@ public class EmailProtocolHandler extends AbstractHandler{
     BotApiMethod handle(Update update, Preferences preferences) {
         Message message = update.getCallbackQuery().getMessage();
         preferences.setProtocol(Protocol.valueOf(update.getCallbackQuery().getData().toUpperCase()));
+        preferences.setSetupState(SetupState.ENTERING_EMAIL);
         return new EditMessageText()
                 .setChatId(message.getChatId())
                 .setMessageId(toIntExact(message.getMessageId()))

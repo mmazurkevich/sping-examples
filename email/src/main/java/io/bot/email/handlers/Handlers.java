@@ -28,6 +28,7 @@ public class Handlers {
         handlers.add(new EmailPasswordHandler());
         handlers.add(new BaseActionHandler());
         handlers.add(new InboxActionHandler());
+        handlers.add(new SettingsActionHandler());
     }
 
     public BotApiMethod handle(Update update) {
@@ -44,12 +45,13 @@ public class Handlers {
         if (preferences == null) {
             preferences = new Preferences();
             preferences.setUserId(userId);
+            repository.create(preferences);
         }
         Preferences finalPreferences = preferences;
         return handlers.stream()
                 .filter(it -> it.accept(update, finalPreferences))
                 .map(it -> it.handle(update, finalPreferences))
-                .peek(it -> repository.create(finalPreferences))
+                .peek(it -> repository.update(finalPreferences))
                 .findFirst()
                 .orElseGet(() -> new SendMessage()
                         .setChatId(message.getChatId())

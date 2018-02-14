@@ -15,10 +15,8 @@ import java.util.List;
 public class UserStartupHandler extends AbstractHandler{
     @Override
     boolean accept(Update update, Preferences preferences) {
-        boolean accepted = update.hasMessage()
+        return update.hasMessage()
                 && update.getMessage().getText().equals("/start");
-        preferences.setSetupState(accepted ? SetupState.SELECT_EMAIL_VENDOR : preferences.getSetupState());
-        return accepted;
     }
 
     @Override
@@ -27,7 +25,7 @@ public class UserStartupHandler extends AbstractHandler{
         Chat chat = update.getMessage().getChat();
         preferences.setFirstName(chat.getFirstName());
         preferences.setLastName(chat.getLastName());
-        preferences.setSetupState(SetupState.FIRST_USER_SETUP);
+        preferences.setSetupState(SetupState.SELECT_EMAIL_VENDOR);
 
         return new SendMessage() // Create a message object object
                 .setChatId(update.getMessage().getChatId())

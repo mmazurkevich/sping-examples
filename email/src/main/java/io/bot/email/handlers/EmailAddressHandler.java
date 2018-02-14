@@ -14,7 +14,6 @@ public class EmailAddressHandler extends AbstractHandler {
         boolean accepted = update.hasMessage()
                 && preferences.getSetupState()!= null
                 && preferences.getSetupState().equals(SetupState.ENTERING_EMAIL);
-        preferences.setSetupState(accepted ? SetupState.ENTERING_PASSWORD : preferences.getSetupState());
         return accepted;
     }
 
@@ -22,6 +21,7 @@ public class EmailAddressHandler extends AbstractHandler {
     BotApiMethod handle(Update update, Preferences preferences) {
         Message message = update.getMessage();
         preferences.setEmail(message.getText());
+        preferences.setSetupState(SetupState.ENTERING_PASSWORD);
         return new SendMessage() // Create a message object object
                 .setChatId(update.getMessage().getChatId())
                 .setText("Please enter Email password");

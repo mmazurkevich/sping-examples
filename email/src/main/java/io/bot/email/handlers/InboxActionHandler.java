@@ -3,6 +3,7 @@ package io.bot.email.handlers;
 import com.vdurmont.emoji.EmojiParser;
 import io.bot.email.model.Preferences;
 import io.bot.email.model.Protocol;
+import io.bot.email.model.SetupState;
 import io.bot.email.model.Vendor;
 import org.telegram.telegrambots.api.methods.BotApiMethod;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -19,13 +20,17 @@ public class InboxActionHandler extends AbstractHandler {
     @Override
     boolean accept(Update update, Preferences preferences) {
         return update.hasCallbackQuery()
-                && update.getCallbackQuery().getData().equals("inbox");
+                && update.getCallbackQuery().getData().equals("inbox")
+                && preferences.getSetupState().equals(SetupState.SETUP_FINISHED);
+
     }
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
+        org.telegram.telegrambots.api.objects. Message message = update.hasMessage() ?
+                                                update.getMessage() : update.getCallbackQuery().getMessage();
         return new SendMessage()
-                .setChatId(update.getCallbackQuery().getMessage().getChatId())
+                .setChatId(message.getChatId())
                 .setText(getEmails(preferences));
 
     }

@@ -2,7 +2,6 @@ package io.bot.email.handlers;
 
 import io.bot.email.model.Preferences;
 import io.bot.email.model.SetupState;
-import io.bot.email.model.Vendor;
 import org.telegram.telegrambots.api.methods.BotApiMethod;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
@@ -13,17 +12,17 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseActionHandler extends AbstractHandler{
+public class SettingsActionHandler extends AbstractHandler{
     @Override
     boolean accept(Update update, Preferences preferences) {
-        return update.hasMessage()
-                && update.getMessage().getText().equals("/actions")
+        return update.hasCallbackQuery()
+                && update.getCallbackQuery().getData().equals("settings")
                 && preferences.getSetupState().equals(SetupState.SETUP_FINISHED);
     }
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
-        Message message = update.getMessage();
+        Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
         return new SendMessage()
                 .setReplyMarkup(getInlineKeyboard())
                 .setChatId(message.getChatId())
@@ -34,12 +33,16 @@ public class BaseActionHandler extends AbstractHandler{
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
-        rowInline.add(new InlineKeyboardButton().setText("Inbox").setCallbackData("inbox"));
-        rowInline.add(new InlineKeyboardButton().setText("Outbox").setCallbackData("outbox"));
+        rowInline.add(new InlineKeyboardButton().setText("Change Email").setCallbackData("changeEmail"));
+        rowInline.add(new InlineKeyboardButton().setText("Change Password").setCallbackData("changePassword"));
         rowsInline.add(rowInline);
         rowInline = new ArrayList<>();
-        rowInline.add(new InlineKeyboardButton().setText("Unread").setCallbackData("unread"));
-        rowInline.add(new InlineKeyboardButton().setText("Settings").setCallbackData("settings"));
+        rowInline.add(new InlineKeyboardButton().setText("Change Vendor").setCallbackData("changeVendor"));
+        rowInline.add(new InlineKeyboardButton().setText("Change Protocol").setCallbackData("changeProtocol"));
+        rowsInline.add(rowInline);
+        rowInline = new ArrayList<>();
+        rowInline.add(new InlineKeyboardButton().setText("<< Back").setCallbackData("backFromSettings"));
+        rowInline.add(new InlineKeyboardButton().setText("Remove account").setCallbackData("removeAccount"));
         rowsInline.add(rowInline);
         markupInline.setKeyboard(rowsInline);
         return markupInline;

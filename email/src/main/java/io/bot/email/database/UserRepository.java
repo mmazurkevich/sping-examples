@@ -21,6 +21,14 @@ public class UserRepository {
         collection.insertOne(convert);
     }
 
+    public void update(Preferences preferences) {
+        MongoDatabase connection = MongoDBConnection.getConnection();
+        MongoCollection<Document> collection = connection.getCollection("users");
+        Document convert = convertForUpdate(preferences);
+        collection.updateOne(Filters.eq("userId", String.valueOf(preferences.getUserId())),
+                new BasicDBObject("$set", new BasicDBObject(convert)));
+    }
+
     public Preferences findByUserId(long userId) {
         MongoDatabase connection = MongoDBConnection.getConnection();
         MongoCollection<Document> collection = connection.getCollection("users");
@@ -35,10 +43,31 @@ public class UserRepository {
         preferences.setPassword(document.getString("password"));
         preferences.setFirstName(document.getString("firstName"));
         preferences.setLastName(document.getString("lastName"));
-        preferences.setProtocol(Protocol.valueOf(document.getString("protocol")));
-        preferences.setVendor(Vendor.valueOf(document.getString("vendor")));
-        preferences.setSetupState(SetupState.valueOf(document.getString("setupState")));
+        if (!document.getString("protocol").isEmpty())
+            preferences.setProtocol(Protocol.valueOf(document.getString("protocol")));
+        if (!document.getString("vendor").isEmpty())
+            preferences.setVendor(Vendor.valueOf(document.getString("vendor")));
+        if (!document.getString("setupState").isEmpty())
+            preferences.setSetupState(SetupState.valueOf(document.getString("setupState")));
         return preferences;
+    }
+
+    private Document convertForUpdate(Preferences preferences) {
+        Document doc = new Document();
+        Field[] declaredFields = Preferences.class.getDeclaredFields();
+        for (Field declaredField : declaredFields) {
+            if (!declaredField.getName().equals("userId")) {
+                Object fieldValue = null;
+                try {
+                    fieldValue = declaredField.get(preferences);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                String value = fieldValue != null ? fieldValue.toString() : "";
+                doc.append(declaredField.getName(), value);
+            }
+        }
+        return doc;
     }
 
     private Document convert(Preferences preferences) {

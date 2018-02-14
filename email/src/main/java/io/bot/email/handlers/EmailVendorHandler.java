@@ -21,7 +21,6 @@ public class EmailVendorHandler extends AbstractHandler {
         boolean accepted = update.hasCallbackQuery()
                 && preferences.getSetupState()!= null
                 && preferences.getSetupState().equals(SetupState.SELECT_EMAIL_VENDOR);
-        preferences.setSetupState(accepted ? SetupState.SELECT_EMAIL_PROTOCOL : preferences.getSetupState());
         return accepted;
     }
 
@@ -29,6 +28,7 @@ public class EmailVendorHandler extends AbstractHandler {
     BotApiMethod handle(Update update, Preferences preferences) {
         Message message = update.getCallbackQuery().getMessage();
         preferences.setVendor(Vendor.valueOf(update.getCallbackQuery().getData().toUpperCase()));
+        preferences.setSetupState(SetupState.SELECT_EMAIL_PROTOCOL);
         return new EditMessageText()
                 .setReplyMarkup(getInlineKeyboard())
                 .setChatId(message.getChatId())
