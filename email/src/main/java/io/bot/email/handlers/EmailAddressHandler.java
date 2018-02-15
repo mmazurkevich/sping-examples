@@ -19,7 +19,7 @@ public class EmailAddressHandler extends AbstractHandler {
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
-        Message message = update.getMessage();
+        Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
         preferences.setEmail(message.getText());
         preferences.setSetupState(SetupState.ENTERING_PASSWORD);
         return new SendMessage() // Create a message object object

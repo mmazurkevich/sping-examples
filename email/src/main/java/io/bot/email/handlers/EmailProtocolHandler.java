@@ -21,7 +21,7 @@ public class EmailProtocolHandler extends AbstractHandler{
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
-        Message message = update.getCallbackQuery().getMessage();
+        Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
         preferences.setProtocol(Protocol.valueOf(update.getCallbackQuery().getData().toUpperCase()));
         preferences.setSetupState(SetupState.ENTERING_EMAIL);
         return new EditMessageText()

@@ -26,7 +26,7 @@ public class EmailVendorHandler extends AbstractHandler {
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
-        Message message = update.getCallbackQuery().getMessage();
+        Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
         preferences.setVendor(Vendor.valueOf(update.getCallbackQuery().getData().toUpperCase()));
         preferences.setSetupState(SetupState.SELECT_EMAIL_PROTOCOL);
         return new EditMessageText()

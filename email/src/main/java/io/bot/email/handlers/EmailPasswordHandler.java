@@ -1,6 +1,5 @@
 package io.bot.email.handlers;
 
-import io.bot.email.database.UserRepository;
 import io.bot.email.model.Preferences;
 import io.bot.email.model.SetupState;
 import org.telegram.telegrambots.api.methods.BotApiMethod;
@@ -12,15 +11,14 @@ public class EmailPasswordHandler extends AbstractHandler {
 
     @Override
     boolean accept(Update update, Preferences preferences) {
-        boolean accepted = update.hasMessage()
+        return update.hasMessage()
                 && preferences.getSetupState() != null
                 && preferences.getSetupState().equals(SetupState.ENTERING_PASSWORD);
-        return accepted;
     }
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
-        Message message = update.getMessage();
+        Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
         preferences.setPassword(message.getText());
         preferences.setSetupState(SetupState.SETUP_FINISHED);
         System.out.println(preferences);

@@ -13,17 +13,20 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseActionHandler extends AbstractHandler{
+public class BaseActionHandler extends AbstractHandler {
     @Override
     boolean accept(Update update, Preferences preferences) {
-        return update.hasMessage()
+        return (update.hasMessage()
                 && update.getMessage().getText().equals("/actions")
-                && preferences.getSetupState().equals(SetupState.SETUP_FINISHED);
+                && preferences.getSetupState().equals(SetupState.SETUP_FINISHED))
+                || (update.hasCallbackQuery()
+                && update.getCallbackQuery().getData().equals("backFromSettings")
+                && preferences.getSetupState().equals(SetupState.SETUP_FINISHED));
     }
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
-        Message message = update.getMessage();
+        Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
         return new SendMessage()
                 .setReplyMarkup(getInlineKeyboard())
                 .setChatId(message.getChatId())
