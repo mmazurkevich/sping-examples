@@ -29,6 +29,8 @@ public class Handlers {
         handlers.add(new BaseActionHandler());
         handlers.add(new InboxActionHandler());
         handlers.add(new SettingsActionHandler());
+        handlers.add(new ChangeVendorHandler());
+        handlers.add(new ChangeProtocolHandler());
     }
 
     public BotApiMethod handle(Update update) {

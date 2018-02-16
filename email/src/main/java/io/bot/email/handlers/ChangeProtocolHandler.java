@@ -2,9 +2,7 @@ package io.bot.email.handlers;
 
 import io.bot.email.model.Preferences;
 import io.bot.email.model.SetupState;
-import io.bot.email.model.Vendor;
 import org.telegram.telegrambots.api.methods.BotApiMethod;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
@@ -16,43 +14,34 @@ import java.util.List;
 
 import static java.lang.StrictMath.toIntExact;
 
-public class BaseActionHandler extends AbstractHandler {
+public class ChangeProtocolHandler extends AbstractHandler{
     @Override
     boolean accept(Update update, Preferences preferences) {
-        return (update.hasMessage()
-                && update.getMessage().getText().equals("/actions")
-                && preferences.getSetupState().equals(SetupState.SETUP_FINISHED))
-                || (update.hasCallbackQuery()
-                && update.getCallbackQuery().getData().equals("backFromSettings")
-                && preferences.getSetupState().equals(SetupState.SETUP_FINISHED));
+        return update.hasCallbackQuery()
+                && update.getCallbackQuery().getData().equals("changeProtocol");
     }
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
         Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
-        if (update.hasMessage())
-            return new SendMessage()
-                    .setReplyMarkup(getInlineKeyboard())
-                    .setChatId(message.getChatId())
-                    .setText("Select prefered action :e-mail:");
-        else
+        preferences.setSetupState(SetupState.CHANGE_PROTOCOL);
         return new EditMessageText()
                 .setReplyMarkup(getInlineKeyboard())
                 .setChatId(message.getChatId())
                 .setMessageId(toIntExact(message.getMessageId()))
-                .setText("Select prefered action :e-mail:");
+                .setText("Please select Email protocol");
     }
 
     private InlineKeyboardMarkup getInlineKeyboard() {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
-        rowInline.add(new InlineKeyboardButton().setText("Inbox").setCallbackData("inbox"));
-        rowInline.add(new InlineKeyboardButton().setText("Outbox").setCallbackData("outbox"));
+        rowInline.add(new InlineKeyboardButton().setText("IMAPS").setCallbackData("imaps"));
+        rowInline.add(new InlineKeyboardButton().setText("POP3").setCallbackData("pop3"));
+        rowInline.add(new InlineKeyboardButton().setText("SMTP").setCallbackData("smtp"));
         rowsInline.add(rowInline);
         rowInline = new ArrayList<>();
-        rowInline.add(new InlineKeyboardButton().setText("Unread").setCallbackData("unread"));
-        rowInline.add(new InlineKeyboardButton().setText("Settings").setCallbackData("settings"));
+        rowInline.add(new InlineKeyboardButton().setText("<< Back").setCallbackData("backInSettings"));
         rowsInline.add(rowInline);
         markupInline.setKeyboard(rowsInline);
         return markupInline;
