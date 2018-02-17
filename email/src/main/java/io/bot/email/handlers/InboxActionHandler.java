@@ -24,34 +24,62 @@ import java.util.Properties;
 import static java.lang.StrictMath.toIntExact;
 
 public class InboxActionHandler extends AbstractHandler {
+
+    private static final String REG_EXP = "^i\\d+$";
+    private int currentPage;
+    private int messagesCount;
+    private int pageSize = 5;
+
     @Override
     boolean accept(Update update, Preferences preferences) {
         return update.hasCallbackQuery()
-                && update.getCallbackQuery().getData().equals("inbox")
+                && (update.getCallbackQuery().getData().equals("inbox")
+                || update.getCallbackQuery().getData().matches(REG_EXP))
                 && preferences.getSetupState().equals(SetupState.SETUP_FINISHED);
 
     }
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
-        org.telegram.telegrambots.api.objects. Message message = update.hasMessage() ?
-                                                update.getMessage() : update.getCallbackQuery().getMessage();
+        org.telegram.telegrambots.api.objects.Message message = update.hasMessage() ?
+                update.getMessage() : update.getCallbackQuery().getMessage();
+        if (update.hasCallbackQuery() && update.getCallbackQuery().getData().equals("inbox")) {
+            currentPage = 1;
+        } else {
+            currentPage = Integer.parseInt(update.getCallbackQuery().getData().replace("i", ""));
+        }
         return new EditMessageText()
-                .setReplyMarkup(getInlineKeyboard())
-                .setChatId(message.getChatId())
                 .setMessageId(toIntExact(message.getMessageId()))
-                .setText(getEmails(preferences));
+                .setChatId(message.getChatId())
+                .setText(getEmails(preferences))
+                .setReplyMarkup(getInlineKeyboard());
 
     }
 
     private InlineKeyboardMarkup getInlineKeyboard() {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        rowsInline.add(getPagination());
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
         rowInline.add(new InlineKeyboardButton().setText("<< Back").setCallbackData("backInActions"));
         rowsInline.add(rowInline);
         markupInline.setKeyboard(rowsInline);
         return markupInline;
+    }
+
+    private List<InlineKeyboardButton> getPagination() {
+        List<InlineKeyboardButton> rowInline = new ArrayList<>();
+        int pagesCount = (int) Math.ceil(messagesCount / (double) pageSize);
+        rowInline.add(new InlineKeyboardButton().setText("<< 1").setCallbackData("i1"));
+        int previousPage = currentPage - 1;
+        if (previousPage > 1)
+            rowInline.add(new InlineKeyboardButton().setText("< " + previousPage).setCallbackData("i" + previousPage));
+        rowInline.add(new InlineKeyboardButton().setText("- " + currentPage + " -").setCallbackData("i" + currentPage));
+        int futurePage = currentPage + 1;
+        if (futurePage < pagesCount)
+            rowInline.add(new InlineKeyboardButton().setText("" + futurePage + " >").setCallbackData("i" + futurePage));
+        rowInline.add(new InlineKeyboardButton().setText("" + pagesCount + " >>").setCallbackData("i" + pagesCount));
+        return rowInline;
     }
 
     private String getEmails(Preferences preferences) {
@@ -65,11 +93,20 @@ public class InboxActionHandler extends AbstractHandler {
             emailFolder.open(Folder.READ_ONLY);
 
             Message[] messages = emailFolder.getMessages();
+
+            messagesCount = messages.length;
+            int fromValue = messagesCount - 1;
+            if (currentPage != 1) {
+                fromValue = messagesCount - (currentPage - 1) * pageSize - 1;
+            }
+            int toValue = messagesCount - currentPage * pageSize;
+            toValue = toValue < 0 ? 0 : toValue;
+
             StringBuilder stringBuilder = new StringBuilder();
-            for (int i = messages.length - 1; i > messages.length - 1 - 5; i--) {
+            for (int i = fromValue; i >= toValue; i--) {
                 Message message = messages[i];
                 stringBuilder.append(":email: ")
-                        .append(((InternetAddress)message.getFrom()[0]).getAddress())
+                        .append(((InternetAddress) message.getFrom()[0]).getAddress())
                         .append("\n")
                         .append("Subject: ")
                         .append(message.getSubject())
