@@ -26,19 +26,9 @@ public class ChangeAddressHandler extends AbstractHandler{
         Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
         preferences.setSetupState(SetupState.CHANGE_ADDRESS);
         return new EditMessageText()
-                .setReplyMarkup(getInlineKeyboard())
                 .setChatId(message.getChatId())
                 .setMessageId(toIntExact(message.getMessageId()))
                 .setText("Please enter your Email address");
     }
 
-    private InlineKeyboardMarkup getInlineKeyboard() {
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-        List<InlineKeyboardButton> rowInline = new ArrayList<>();
-        rowInline.add(new InlineKeyboardButton().setText("<< Back").setCallbackData("backInSettings"));
-        rowsInline.add(rowInline);
-        markupInline.setKeyboard(rowsInline);
-        return markupInline;
-    }
 }
