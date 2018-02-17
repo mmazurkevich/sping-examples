@@ -20,20 +20,32 @@ import static java.lang.StrictMath.toIntExact;
 public class SettingsActionHandler extends AbstractHandler{
     @Override
     boolean accept(Update update, Preferences preferences) {
-        return update.hasCallbackQuery()
+        return (update.hasCallbackQuery()
                 && (update.getCallbackQuery().getData().equals("settings")
                 || update.getCallbackQuery().getData().equals("backInSettings")
                 || preferences.getSetupState().equals(SetupState.CHANGE_PROTOCOL)
-                || preferences.getSetupState().equals(SetupState.CHANGE_VENDOR));
+                || preferences.getSetupState().equals(SetupState.CHANGE_VENDOR)))
+                || (update.hasMessage()
+                && (preferences.getSetupState().equals(SetupState.CHANGE_ADDRESS)
+                || preferences.getSetupState().equals(SetupState.CHANGE_PASSWORD)));
     }
 
     @Override
     BotApiMethod handle(Update update, Preferences preferences) {
         Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
-        if (preferences.getSetupState().equals(SetupState.CHANGE_PROTOCOL)) {
-            preferences.setProtocol(Protocol.valueOf(update.getCallbackQuery().getData().toUpperCase()));
-        } else if (preferences.getSetupState().equals(SetupState.CHANGE_VENDOR)) {
-            preferences.setVendor(Vendor.valueOf(update.getCallbackQuery().getData().toUpperCase()));
+        switch (preferences.getSetupState()) {
+            case CHANGE_PROTOCOL:
+                preferences.setProtocol(Protocol.valueOf(update.getCallbackQuery().getData().toUpperCase()));
+                break;
+            case CHANGE_VENDOR:
+                preferences.setVendor(Vendor.valueOf(update.getCallbackQuery().getData().toUpperCase()));
+                break;
+            case CHANGE_ADDRESS:
+                preferences.setEmail(message.getText());
+                break;
+            case CHANGE_PASSWORD:
+                preferences.setPassword(message.getText());
+                break;
         }
         preferences.setSetupState(SetupState.SETUP_FINISHED);
 

@@ -7,14 +7,21 @@ import io.bot.email.model.SetupState;
 import io.bot.email.model.Vendor;
 import org.telegram.telegrambots.api.methods.BotApiMethod;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+
+import static java.lang.StrictMath.toIntExact;
 
 public class InboxActionHandler extends AbstractHandler {
     @Override
@@ -29,10 +36,22 @@ public class InboxActionHandler extends AbstractHandler {
     BotApiMethod handle(Update update, Preferences preferences) {
         org.telegram.telegrambots.api.objects. Message message = update.hasMessage() ?
                                                 update.getMessage() : update.getCallbackQuery().getMessage();
-        return new SendMessage()
+        return new EditMessageText()
+                .setReplyMarkup(getInlineKeyboard())
                 .setChatId(message.getChatId())
+                .setMessageId(toIntExact(message.getMessageId()))
                 .setText(getEmails(preferences));
 
+    }
+
+    private InlineKeyboardMarkup getInlineKeyboard() {
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        List<InlineKeyboardButton> rowInline = new ArrayList<>();
+        rowInline.add(new InlineKeyboardButton().setText("<< Back").setCallbackData("backInActions"));
+        rowsInline.add(rowInline);
+        markupInline.setKeyboard(rowsInline);
+        return markupInline;
     }
 
     private String getEmails(Preferences preferences) {

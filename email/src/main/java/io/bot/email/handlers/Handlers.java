@@ -31,6 +31,8 @@ public class Handlers {
         handlers.add(new SettingsActionHandler());
         handlers.add(new ChangeVendorHandler());
         handlers.add(new ChangeProtocolHandler());
+        handlers.add(new ChangeAddressHandler());
+        handlers.add(new ChangePasswordHandler());
     }
 
     public BotApiMethod handle(Update update) {
