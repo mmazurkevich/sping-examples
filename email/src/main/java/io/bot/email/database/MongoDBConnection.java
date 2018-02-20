@@ -7,7 +7,7 @@ import com.mongodb.client.MongoDatabase;
 public class MongoDBConnection {
 
     private static MongoDatabase database;
-    private static final String DATABSE_URL = "mongodb://127.0.0.1:27017";
+    private static final String DATABSE_URL = "mongodb://mongodb:27017";
     private static final String DATABSE_NAME = "email_bot";
 
     public static MongoDatabase getConnection() {
