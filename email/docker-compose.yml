@@ -10,11 +10,12 @@ services:
             - mongodb
     mongodb:
         image: mongo:latest
-        environment:
-          - MONGO_DATA_DIR=/data/db
-          - MONGO_LOG_DIR=/dev/null
-        volumes:
-          - ./data/db:/data/db
+#        environment:
+#          - MONGO_INITDB_DATABASE=email_bot
+#          - MONGO_DATA_DIR=/data/db
+#        volumes:
+#          - ./data/db:/data/db
+#          - ./data/mysetup.js /docker-entrypoint-initdb.d/
         ports:
             - 27017:27017
         command:  --storageEngine=wiredTiger
