@@ -32,12 +32,12 @@ public class TelegramEmailLongPollingBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "PostmatBot";
+        return System.getenv("BOT_USERNAME");
     }
 
     @Override
     public String getBotToken() {
-        return "";
+        return System.getenv("BOT_TOKEN");
     }
 
 }
