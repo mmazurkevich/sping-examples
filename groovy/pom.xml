@@ -24,7 +24,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.4.13</version>
+            <version>2.4.7</version>
         </dependency>
         <!-- SQLite-jdbc -->
         <dependency>
@@ -33,6 +33,13 @@
             <version>3.21.0.1</version>
         </dependency>
 
+        <!-- Groovy - Spock -->
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>1.0-groovy-2.4</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

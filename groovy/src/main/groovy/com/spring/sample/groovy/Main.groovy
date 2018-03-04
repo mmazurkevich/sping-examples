@@ -8,9 +8,7 @@ import org.jsoup.nodes.Document
 
 import java.text.DecimalFormat
 
-/**
- * Created by Mikhail on 01.12.2017.
- */
+//@Grab(group = "org.xerial", module = "sqlite-jdbc", version = "3.21.0.1") //Dependency management
 class Main {
 
     private static int previousFilmId = 0
