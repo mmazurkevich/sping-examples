@@ -4,6 +4,7 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 
 task assembJar(type: Jar) {
+    description 'Creates executable jar file.'
     manifest {
         attributes(
                 'Main-Class': 'io.bot.email.EmailBotStartup'
